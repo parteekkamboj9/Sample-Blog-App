@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load custom_tags %}
+{% block title %}
+Blog Page
+{% endblock %}
+
+{% block body %}
+
+    <div class="container">
+        <div class="row mt-4">
+            <div class="col-lg-8 col-md-12">
+                <div class="blog-view">
+                    <div class="blog blog-single-post">
+                        <div class="blog-image">
+                            {% if blog.image %}
+                                <a href="javascript:void(0);"><img alt="" src="{{blog.image.url}}" class="img-fluid"></a>
+                            {% else %}
+                                <a href="javascript:void(0);"><img alt="" src="{% static '' %}assets/img/blog/blog-01.jpg" class="img-fluid"></a>
+                            {% endif %}
+                        </div>
+                      <h1 class="blog-title"><strong>{{blog.title}}</strong></h1>
+                        <div class="blog-info clearfix">
+                            <div class="post-left">
+                                <ul>
+                                    <li><i class="far fa-calendar"></i>{{blog.published_date|date}} ({{blog.published_date|timesince}} ago)</li>
+                                    <li><i class="far fa-comments"></i>{{comments|length}} Comments</li>
+                                    <li><i class="fa fa-tags"></i>{{blog.category.name}}</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="blog-content">
+                            <p>{{blog.description|safe}}</p>
+                        </div>
+                    </div>
+
+                    <div class="card blog-comments clearfix">
+                        <div class="card-header">
+                            <h4 class="card-title">Comments ({{comments|length}})</h4>
+                        </div>
+                        <div class="card-body pb-0">
+                        <ul class="comments-list">
+                            {% for comment in comments %}
+                            <li>
+                                <div class="comment">
+                                    <div class="comment-block">
+                                        <span class="comment-by">
+                                            <span class="blog-author-name">{{comment.user.username}}</span>
+                                        </span>
+                                        <p style="margin-left: 5px;">{{comment.comment}} <span class="font-italic">({{comment.created_at|timesince}} ago)</span></p>
+                                    </div>
+                                </div>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    </div>
+
+                    <div class="card new-comment clearfix">
+                        <div class="card-header">
+                            <h4 class="card-title">Leave Comment</h4>
+                        </div>
+                        <div class="card-body">
+                            {% if request.user.id %}
+                                <form action="/add-comment/{{blog.id}}" method="POST">
+                                    {% csrf_token %}
+                                    <div class="form-group">
+                                        <label>Comments <span class="text-danger">*</span></label>
+                                        <textarea rows="4" name="comment" class="form-control" required></textarea>
+                                    </div>
+                                    <div class="submit-section">
+                                        <button class="btn btn-primary submit-btn" type="submit">Submit</button>
+                                    </div>
+                                </form>
+                            {% else %}
+                            <p><a href="/login?next=/blog/{{blog.id}}">Login</a> to add a comment.</p>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Blog Sidebar -->
+            {% include 'blog-sidebar.html' %}
+            <!-- /Blog Sidebar -->
+
+        </div>
+    </div>
+
+
+{% endblock %}

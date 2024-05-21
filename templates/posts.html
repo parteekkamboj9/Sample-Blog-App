@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load custom_tags %}
+{% block title %}
+New Blog Page
+{% endblock %}
+
+{% block body %}
+
+    <div class="container">
+
+        <div class="row mt-4">
+            <div class="col-lg-8 col-md-12">
+
+                <!-- Blog Post -->
+                {% for blog in page_obj.object_list %}
+                <div class="blog mb-4">
+                    <div class="blog-image">
+                        {% if blog.image %}
+                        <a href="/blog/{{blog.id}}"><img class="img-fluid" src="{{blog.image.url}}" alt="Post Image"></a>
+                        {% endif %}
+                    </div>
+                    <h3 class="blog-title"><a href="/blog/{{blog.id}}">{{blog.title|safe|truncatechars:150}}</a></h3>
+                    <div class="blog-info clearfix">
+                        <div class="post-left">
+                            <ul>
+                                <li><i class="far fa-clock"></i>{{blog.published_date|date}}</li>
+                                <li><i class="fa fa-tags"></i>{{blog.category.name}}</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="blog-content mb-4">
+                        <p>{{blog.description|safe|truncatechars:250}}</p>
+                        <p><a href="/blog/{{blog.id}}">Read More</a></p>
+                    </div>
+                </div>
+                <hr>
+                {% endfor %}
+                <!-- /Blog Post -->
+
+                <!-- Blog Pagination -->
+                <div class="row">
+                    <div class="col-md-12">
+                        <center class="justify-content-center">
+                            <a>Page</a>
+                        </center>
+                        <div class="blog-pagination">
+                            <nav>
+                                <ul class="pagination justify-content-center">
+                                    {%if page_obj.has_previous %} {# whether the previous page exists #}
+                                    <li class="page-item disabled">
+                                        <a href="?page={{page_obj.previous_page_number}}"><</a> {# link to the prev page #}
+                                    </li>
+                                    {% endif %}
+                                    <li class="page-item disabled">
+                                        <span>{{page_obj.number}}</span> {# the current page number #}
+                                    </li>
+                                    {%if page_obj.has_next %} {# whether the next page exists #}
+                                    <li class="page-item disabled">
+                                        <a href="?page={{page_obj.next_page_number}}">></a> {# link to the next page #}
+                                    </li>
+                                    {% endif %}
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+                <!-- /Blog Pagination -->
+
+            </div>
+
+            <!-- Blog Sidebar -->
+            {% include 'blog-sidebar.html' %}
+            <!-- /Blog Sidebar -->
+
+        </div>
+    </div>
+
+{% endblock %}

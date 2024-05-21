@@ -1,2 +1,2 @@
-# Sample-Blog-App
-Sample-Blog-App
+# Blog-app
+Sample Blog App

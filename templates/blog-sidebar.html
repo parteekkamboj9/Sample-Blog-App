@@ -1,0 +1,61 @@
+
+{% load static %}
+            <div class="col-lg-4 col-md-12 sidebar-right theiaStickySidebar">
+
+                <!-- Search -->
+
+                <!-- /Search -->
+
+                <!-- Latest Posts -->
+                <div class="card post-widget">
+                    <div class="card-header">
+                        <h4 class="card-title">Latest Posts</h4>
+                    </div>
+                    <div class="card-body">
+                        <ul class="latest-posts">
+                            {% for latest_blog in latest_post %}
+                                <li>
+                                    <div class="post-info">
+                                        <div>
+                                            <a href="/blog/{{latest_blog.id}}">{{latest_blog.title}}</a>
+                                        </div>
+                                        <p>{{latest_blog.published_date|date}}</p>
+                                    </div>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+                <!-- /Latest Posts -->
+
+                <!-- Categories -->
+                <div class="card category-widget">
+                    <div class="card-header">
+                        <h4 class="card-title">Blog Categories</h4>
+                    </div>
+                    <div class="card-body">
+                        <ul class="categories">
+                            {% for item in blog_categories %}
+                            <li><a href="#">{{item.name}} <span></span></a></li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+                <!-- /Categories -->
+
+                <!-- Tags -->
+                <div class="card tags-widget">
+                    <div class="card-header">
+                        <h4 class="card-title">Tags</h4>
+                    </div>
+                    <div class="card-body">
+                        <ul class="tags">
+                            {% for tag in tags %}
+                                <li><a href="/search?search={{tag.name}}" class="tag">{{tag.name}}</a></li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+                <!-- /Tags -->
+
+            </div>
